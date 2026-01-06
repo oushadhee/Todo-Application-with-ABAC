@@ -35,8 +35,8 @@ function TodoCard({ todo }: { todo: Todo }) {
 
   if (!user) return null;
 
-  const canEdit = canUpdateTodo(user.role, todo.userId, user.id);
-  const canRemove = canDeleteTodo(user.role, todo.status, todo.userId, user.id);
+  const canEdit = canUpdateTodo((user as any).role, todo.userId, user.id);
+  const canRemove = canDeleteTodo((user as any).role, todo.status, todo.userId, user.id);
 
   const handleStatusChange = async (newStatus: Status) => {
     try {
@@ -152,7 +152,7 @@ export function TodoList() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Todos</h1>
-        {user?.role === 'USER' && (
+        {(user as any)?.role === 'USER' && (
           <TodoForm
             trigger={
               <Button>

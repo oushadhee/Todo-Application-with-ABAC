@@ -25,14 +25,14 @@ export function AuthForm() {
       if (isLogin) {
         const result = await authClient.signIn.email({ email, password });
         if (result.error) {
-          setError(result.error.message);
+          setError(result.error.message || 'An error occurred');
         } else {
           router.push('/');
         }
       } else {
         const result = await authClient.signUp.email({ email, password, name });
         if (result.error) {
-          setError(result.error.message);
+          setError(result.error.message || 'An error occurred');
         } else {
           router.push('/');
         }

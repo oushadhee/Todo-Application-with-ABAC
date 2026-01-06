@@ -32,7 +32,7 @@ export default function Home() {
           <h1 className="text-xl font-semibold">Todo App with ABAC</h1>
           <div className="flex items-center gap-4">
             <span className="text-sm text-gray-600">
-              Welcome, {user.name || user.email} ({user.role})
+              Welcome, {user.name || user.email} ({(user as any).role || 'USER'})
             </span>
             <Button variant="outline" onClick={handleSignOut}>
               Sign Out

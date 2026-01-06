@@ -6,6 +6,14 @@ export function useAuth() {
     queryKey: ['auth-session'],
     queryFn: async () => {
       const session = await authClient.getSession();
+      if (session.data?.user) {
+        // Fetch user with role from API
+        const response = await fetch('/api/auth/user');
+        if (response.ok) {
+          const userData = await response.json();
+          return { ...session.data, user: { ...session.data.user, role: userData.role } };
+        }
+      }
       return session.data;
     },
     staleTime: 1000 * 60 * 5, // 5 minutes
