@@ -1,13 +1,141 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Todo Application with ABAC (Attribute-Based Access Control)
+
+A comprehensive todo application demonstrating Attribute-Based Access Control (ABAC) implementation using Next.js, Better Auth, Prisma, and shadcn/ui.
+
+## Features
+
+- **User Authentication**: Secure authentication with Better Auth
+- **Role-Based Access Control**: Three user roles (USER, MANAGER, ADMIN) with different permissions
+- **Todo Management**: Create, read, update, and delete todos with proper access controls
+- **Modern UI**: Clean interface built with shadcn/ui components
+- **Real-time Updates**: TanStack Query for efficient data fetching and caching
+
+## User Roles & Permissions
+
+### USER
+- ✅ View own todos
+- ✅ Create new todos
+- ✅ Update own todos
+- ❌ Delete only own draft todos
+
+### MANAGER
+- ✅ View all todos (read-only)
+- ❌ Create todos
+- ❌ Update todos
+- ❌ Delete todos
+
+### ADMIN
+- ✅ View all todos
+- ❌ Create todos
+- ❌ Update todos
+- ✅ Delete any todo (regardless of status)
+
+## Tech Stack
+
+- **Frontend**: Next.js 16 (App Router)
+- **UI Components**: shadcn/ui
+- **Styling**: Tailwind CSS
+- **Data Fetching**: TanStack Query
+- **Authentication**: Better Auth
+- **Database**: SQLite with Prisma ORM
+- **TypeScript**: Full type safety
 
 ## Getting Started
 
-First, run the development server:
+1. **Install dependencies**:
+   ```bash
+   npm install
+   ```
 
-```bash
-npm run dev
-# or
-yarn dev
+2. **Set up the database**:
+   ```bash
+   npx prisma generate
+   npx prisma migrate dev --name init
+   ```
+
+3. **Run the development server**:
+   ```bash
+   npm run dev
+   ```
+
+4. **Open [http://localhost:3000](http://localhost:3000)** in your browser.
+
+## Testing the Application
+
+1. **Register new users** or use these test accounts:
+   - `user@example.com` (USER role)
+   - `manager@example.com` (MANAGER role)
+   - `admin@example.com` (ADMIN role)
+   - Password: `password123`
+
+2. **Test ABAC permissions**:
+   - Create todos as a USER
+   - Switch accounts to see different permission levels
+   - Try updating/deleting todos with different roles
+
+## Project Structure
+
+```
+src/
+├── app/
+│   ├── api/
+│   │   ├── auth/[...all]/route.ts    # Better Auth API routes
+│   │   └── todos/                    # Todo CRUD API routes
+│   ├── globals.css                   # Global styles
+│   ├── layout.tsx                    # Root layout with providers
+│   └── page.tsx                      # Main application page
+├── components/
+│   ├── auth-form.tsx                 # Authentication form
+│   ├── providers.tsx                 # React Query provider
+│   ├── todo-form.tsx                 # Todo creation/editing form
+│   ├── todo-list.tsx                 # Todo list display
+│   └── ui/                           # shadcn/ui components
+├── hooks/
+│   ├── use-auth.ts                   # Authentication hook
+│   └── use-todos.ts                  # Todo API hooks
+└── lib/
+    ├── abac.ts                       # Access control logic
+    ├── auth.ts                       # Better Auth configuration
+    └── prisma.ts                     # Prisma client
+```
+
+## ABAC Implementation
+
+The access control is implemented in `src/lib/abac.ts` with functions that check permissions based on:
+- User role (USER, MANAGER, ADMIN)
+- Todo ownership (userId)
+- Todo status (DRAFT, IN_PROGRESS, COMPLETED)
+
+## Deployment
+
+The application can be deployed to Vercel, Render, or any platform supporting Next.js:
+
+1. **Build the application**:
+   ```bash
+   npm run build
+   ```
+
+2. **Deploy** to your preferred platform
+
+## Environment Variables
+
+Create a `.env` file with:
+```
+DATABASE_URL="file:./dev.db"
+BETTER_AUTH_SECRET="your-secret-key"
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
+
+## License
+
+MIT License
 # or
 pnpm dev
 # or
